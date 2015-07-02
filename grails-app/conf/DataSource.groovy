@@ -17,17 +17,22 @@ hibernate {
 	use_sql_comments = true
 }
 
+def dbHost = System.getenv('DB_PORT_3306_TCP_ADDR')
 environments {
 	development {
 		dataSource {
 			dbCreate = 'create-drop' // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+        	    url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
 		}
 	}
 	test {
 		dataSource {
 			dbCreate = 'create-drop'
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+			driverClassName = "com.mysql.jdbc.Driver"
+			dialect = 'org.hibernate.dialect.MySQL5InnoDBDialect'
+			url = "jdbc:mysql://${dbHost}:3306/petclinic"
+			username = "pet"
+			password = "pet"
 		}
 	}
 	production {
